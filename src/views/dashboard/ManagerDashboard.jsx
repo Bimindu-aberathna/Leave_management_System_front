@@ -179,7 +179,7 @@ const ManagerDashboard = () => {
   return (
     <>
       <WidgetsDropdown className="mb-4" />
-      <CCard className="mb-4">
+      {/* <CCard className="mb-4">
         <CCardBody>
           <CRow>
             <CCol sm={5}>
@@ -206,8 +206,8 @@ const ManagerDashboard = () => {
               </CButtonGroup>
             </CCol>
           </CRow>
-          <MainChart />
-        </CCardBody>
+          {/* <MainChart /> */}
+        {/* </CCardBody>
         <CCardFooter>
           <CRow
             xs={{ cols: 1, gutter: 4 }}
@@ -231,8 +231,8 @@ const ManagerDashboard = () => {
               </CCol>
             ))}
           </CRow>
-        </CCardFooter>
-      </CCard>
+        </CCardFooter> */} 
+      {/* // </CCard> */}
       <WidgetsBrand className="mb-4" withCharts />
       <CRow>
         <CCol xs>
