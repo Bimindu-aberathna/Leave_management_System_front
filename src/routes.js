@@ -1,8 +1,14 @@
 import React from 'react'
 
 const Dashboard = React.lazy(() => import('./views/dashboard/Dashboard'))
+const Login = React.lazy(() => import('./views/pages/login/Login'))
+const Notifications = React.lazy(() => import('./views/pages/Notofications/Notifications'))
 const Colors = React.lazy(() => import('./views/theme/colors/Colors'))
 const Typography = React.lazy(() => import('./views/theme/typography/Typography'))
+const EmployeeDashboard = React.lazy(() => import('./views/dashboard/EmployeeDashboard'))
+const ManagetDashboard = React.lazy(() => import('./views/dashboard/ManagerDashboard'))
+const CEO = React.lazy(() => import('./views/dashboard/CEODashboard')) 
+// const Notifications
 
 // Base
 const Accordion = React.lazy(() => import('./views/base/accordion/Accordion'))
@@ -54,6 +60,12 @@ const Widgets = React.lazy(() => import('./views/widgets/Widgets'))
 const routes = [
   { path: '/', exact: true, name: 'Home' },
   { path: '/dashboard', name: 'Dashboard', element: Dashboard },
+  {path: '/login', name: 'Login', element: Login},
+  {path : 'dashboard/employee', name: 'EmployeeDashboard', element: EmployeeDashboard},
+  {path : 'dashboard/manager', name: 'ManagerDashboard', element: ManagetDashboard},
+  {path : 'dashboard/ceo', name: 'CEO', element: CEO},
+  {path: '/notifications', name: 'Notifications', element: Notifications},
+
   { path: '/theme', name: 'Theme', element: Colors, exact: true },
   { path: '/theme/colors', name: 'Colors', element: Colors },
   { path: '/theme/typography', name: 'Typography', element: Typography },

@@ -1,0 +1,18 @@
+#regBtn{
+    color: white;
+}
+
+#regBtn:hover{
+    transform: scale(1.05);
+}
+
+#loginBtn{
+    color: #ed4242
+}
+#loginBtn:hover{
+    border: 1px solid white;
+    transform: scale(1.05);
+    background-color: #ed4242;
+    color: white;
+    transition: 0.5s;
+}
