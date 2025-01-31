@@ -20,6 +20,14 @@ yarn.lock
 .env.test.local
 .env.production.local
 
+# Vite specific
+/.vite
+/vite.lock
+
+# npm logs
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+# Build output
+/dist
