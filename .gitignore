@@ -5,6 +5,16 @@
 package-lock.json
 yarn.lock
 
+# GitHub specific files
+COMMIT_CONVENTION.md
+CONTRIBUTING.md
+FUNDING.yml
+SUPPORT.md
+bug_report.md
+feature_request.md
+npm.yml
+stale.yml
+
 # testing
 /coverage
 
@@ -31,11 +41,3 @@ yarn-error.log*
 
 # Build output
 /dist
-
-# GitHub configuration and workflow files
-.github/
-.github/**
-
-# Specific workflow files
-.github/workflows/
-.github/workflows/*
