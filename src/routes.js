@@ -41,6 +41,7 @@ const Layout = React.lazy(() => import('./views/forms/layout/Layout'))
 const Range = React.lazy(() => import('./views/forms/range/Range'))
 const Select = React.lazy(() => import('./views/forms/select/Select'))
 const Validation = React.lazy(() => import('./views/forms/validation/Validation'))
+// const EmployeeDashboard = React.lazy(() => import('./views/dashboard/EmployeeDashboard'))
 
 const Charts = React.lazy(() => import('./views/charts/Charts'))
 
@@ -61,9 +62,9 @@ const routes = [
   { path: '/', exact: true, name: 'Home' },
   { path: '/dashboard', name: 'Dashboard', element: Dashboard },
   {path: '/login', name: 'Login', element: Login},
-  {path : 'dashboard/employee', name: 'EmployeeDashboard', element: EmployeeDashboard},
-  {path : 'dashboard/manager', name: 'ManagerDashboard', element: ManagetDashboard},
-  {path : 'dashboard/ceo', name: 'CEO', element: CEO},
+  {path : '/dashboard/employee', name: 'EmployeeDashboard', element: EmployeeDashboard},
+  {path : '/dashboard/manager', name: 'ManagerDashboard', element: ManagetDashboard},
+  {path : '/dashboard/ceo', name: 'CEO', element: CEO},
   {path: '/notifications', name: 'Notifications', element: Notifications},
 
   { path: '/theme', name: 'Theme', element: Colors, exact: true },

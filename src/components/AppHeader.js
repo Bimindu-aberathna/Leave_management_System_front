@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react'
-import { Link, NavLink, useNavigate } from 'react-router-dom'
+import { NavLink, useNavigate } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import {
   CContainer,
@@ -13,11 +13,15 @@ import {
   CNavLink,
   CNavItem,
   useColorModes,
+  CButton,
+  CBadge,
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
 import {
   cilBell,
   cilContrast,
+  cilEnvelopeOpen,
+  cilList,
   cilMenu,
   cilMoon,
   cilSun,
@@ -25,14 +29,18 @@ import {
 
 import { AppBreadcrumb } from './index'
 import { AppHeaderDropdown } from './header/index'
+import { logout } from '../store' // Import logout action
 
 const AppHeader = () => {
   const headerRef = useRef()
   const { colorMode, setColorMode } = useColorModes('coreui-free-react-admin-template-theme')
-  const navigate = useNavigate()  
+
+  // Get user info from Redux state
+  const userName = useSelector((state) => state.app.userName)
+  const role = useSelector((state) => state.app.role) // Assuming role exists in state
+  const sidebarShow = useSelector((state) => state.sidebarShow)
 
   const dispatch = useDispatch()
-  const sidebarShow = useSelector((state) => state.sidebarShow)
 
   useEffect(() => {
     document.addEventListener('scroll', () => {
@@ -40,45 +48,48 @@ const AppHeader = () => {
         headerRef.current.classList.toggle('shadow-sm', document.documentElement.scrollTop > 0)
     })
   }, [])
+  const navigate = useNavigate()
+  // Handle Logout
+  function handleLogout() {
+    dispatch(logout())
+    navigate('/login')
+  }
 
   return (
     <CHeader position="sticky" className="mb-4 p-0" ref={headerRef}>
       <CContainer className="border-bottom px-4" fluid>
-        <CHeaderToggler
+        {/* <CHeaderToggler
           onClick={() => dispatch({ type: 'set', sidebarShow: !sidebarShow })}
           style={{ marginInlineStart: '-14px' }}
         >
           <CIcon icon={cilMenu} size="lg" />
-        </CHeaderToggler>
+        </CHeaderToggler> */}
         <CHeaderNav className="d-none d-md-flex">
           <CNavItem>
             <CNavLink to="/dashboard" as={NavLink}>
               Dashboard
             </CNavLink>
           </CNavItem>
-          {/* <CNavItem>
-            <CNavLink href="#">Users</CNavLink>
-          </CNavItem> */}
-          <CNavItem>
-            <CNavLink href="#">Settings</CNavLink>
-          </CNavItem>
         </CHeaderNav>
         <CHeaderNav className="ms-auto">
           <CNavItem>
-            <Link to="/notifications" className="nav-link">
+            <CNavLink href="#" style={{ position: 'relative', display: 'inline-block' }}>
               <CIcon icon={cilBell} size="lg" />
-            </Link>
+              <CBadge
+                shape="pill"
+                color="danger"
+                className="ms-2"
+                style={{ position: 'absolute', top: '-5px', right: '-2px' }}
+              >
+                5
+              </CBadge>
+            </CNavLink>
           </CNavItem>
-          {/* <CNavItem>
+          <CNavItem>
             <CNavLink href="#">
               <CIcon icon={cilList} size="lg" />
             </CNavLink>
-          </CNavItem> */}
-          {/* <CNavItem>
-            <CNavLink href="#">
-              <CIcon icon={cilEnvelopeOpen} size="lg" />
-            </CNavLink>
-          </CNavItem> */}
+          </CNavItem>
         </CHeaderNav>
         <CHeaderNav>
           <li className="nav-item py-1">
@@ -124,14 +135,35 @@ const AppHeader = () => {
               </CDropdownItem>
             </CDropdownMenu>
           </CDropdown>
+
+          {/* LOGOUT BUTTON */}
+          {/* 
+          {userName || role ? (
+            <CButton onClick={handleLogout} color="danger" className="ms-3">
+              Logout
+            </CButton>
+          ) : null} */}
+
           <li className="nav-item py-1">
             <div className="vr h-100 mx-2 text-body text-opacity-75"></div>
           </li>
-          <AppHeaderDropdown />
+          {userName ? (
+            <CNavItem>
+              <p
+                className="h-100 d-flex justify-content-center align-items-center"
+                style={{ fontWeight: 'bold', marginLeft: '1rem', marginRight: '1rem' }}
+                disabled
+                href="#"
+              >
+                {userName.toUpperCase()}
+              </p>
+            </CNavItem>
+          ) : null}
+          {userName || role ? <AppHeaderDropdown handleLogout={handleLogout} /> : null}
         </CHeaderNav>
       </CContainer>
       <CContainer className="px-4" fluid>
-        <AppBreadcrumb />
+        {/* <AppBreadcrumb /> */}
       </CContainer>
     </CHeader>
   )
