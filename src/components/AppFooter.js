@@ -8,7 +8,7 @@ const AppFooter = () => {
         <a href="https://www.aahaas.com/" target="_blank" rel="noopener noreferrer">
           AAHAAS
         </a>
-        <span className="ms-1">&copy; 2024 AppleTechLabs.</span>
+        <span className="ms-1">&copy; 2024 Aahhas Leave Management System.</span>
       </div>
     </CFooter>
   )
