@@ -31,3 +31,11 @@ yarn-error.log*
 
 # Build output
 /dist
+
+# GitHub configuration and workflow files
+.github/
+.github/**
+
+# Specific workflow files
+.github/workflows/
+.github/workflows/*
