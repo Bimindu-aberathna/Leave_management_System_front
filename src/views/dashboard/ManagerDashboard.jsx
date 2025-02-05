@@ -55,6 +55,10 @@ import WidgetsDropdown from '../widgets/WidgetsDropdown'
 import MainChart from './MainChart'
 import axios from 'axios'
 
+const leaveHistory = [
+  {department: 'IT', history: [1,5,2,5,3,4,5,6,7,8,6,7,3,4,6,2,1,0,0,4,5,6,7,8,9,5,4,3,2,1]},
+]
+
 const ManagerDashboard = () => {
   const [progressGroupExample1, setProgressGroupExample1] = useState([
     { title: 'Monday', leave: 34, halfDay: 78 },
@@ -119,7 +123,7 @@ const ManagerDashboard = () => {
               </CButtonGroup>
             </CCol> */}
           </CRow>
-          <MainChart />
+          <MainChart exampleData={leaveHistory} />
         </CCardBody>
         {/* <CCardFooter>
           <CRow
