@@ -41,6 +41,7 @@ import {
   cilPeople,
   cilUser,
   cilUserFemale,
+  cilTruck,
 } from '@coreui/icons'
 
 import avatar1 from 'src/assets/images/avatars/1.jpg'
@@ -51,8 +52,23 @@ import avatar5 from 'src/assets/images/avatars/5.jpg'
 import avatar6 from 'src/assets/images/avatars/6.jpg'
 
 import WidgetsBrand from '../widgets/WidgetsBrand'
-import WidgetsDropdown from '../widgets/WidgetsDropdown'
 import MainChart from './MainChart'
+
+const WidgetDataSample = [
+  { department: 'Sales', onLeave: 2, halfDay: 1 },
+  { department: 'User Experience', onLeave: 0, halfDay: 0 },
+  { department: 'Accounting', onLeave: 1, halfDay: 0 },
+  { department: 'Customer Support', onLeave: 0, halfDay: 0 },
+  { department: 'IT', onLeave: 0, halfDay: 0 },
+]
+
+const leaveHistory = [
+  {department: 'Sales', history: [1,5,2,5,3,4,5,6,7,8,6,7,3,4,6,2,1,0,0,4,5,6,7,8,9,5,4,3,2,1]},
+  {department: 'User Experience', history: [2,5,3,4,5,6,7,8,9,5,4,3,2,1,0,0,4,5,6,7,8,9,5,4,3,2,1,0,0,4]},
+  {department: 'Accounting', history: [3,4,5,6,7,8,9,5,4,3,2,1,0,0,4,5,6,7,8,9,5,4,3,2,1,0,0,4,5,6,7]},
+  {department: 'Customer Support', history: [4,5,6,7,8,9,5,4,3,2,1,0,0,4,5,6,7,8,9,5,4,3,2,1,0,0,4,5,6,7,8]},
+  {department: 'IT', history: [5,6,7,8,9,5,4,3,2,1,0,0,4,5,6,7,8,9,5,4,3,2,1,0,0,4,5,6,7,8,9]},
+]
 
 const CEODashboard = () => {
   const progressExample = [
@@ -178,35 +194,21 @@ const CEODashboard = () => {
 
   return (
     <>
-      <WidgetsDropdown className="mb-4" />
+      {/* <CEOWidgetsDropdown className="mb-4" /> */}
+
+      <WidgetsBrand data={WidgetDataSample} className="mb-4" withCharts />
       <CCard className="mb-4">
         <CCardBody>
           <CRow>
             <CCol sm={5}>
               <h4 id="traffic" className="card-title mb-0">
-                Traffic CEO
+                Leave History
               </h4>
-              <div className="small text-body-secondary">January - July 2023</div>
             </CCol>
             <CCol sm={7} className="d-none d-md-block">
-              <CButton color="primary" className="float-end">
-                <CIcon icon={cilCloudDownload} />
-              </CButton>
-              <CButtonGroup className="float-end me-3">
-                {['Day', 'Month', 'Year'].map((value) => (
-                  <CButton
-                    color="outline-secondary"
-                    key={value}
-                    className="mx-0"
-                    active={value === 'Month'}
-                  >
-                    {value}
-                  </CButton>
-                ))}
-              </CButtonGroup>
             </CCol>
           </CRow>
-          <MainChart />
+          <MainChart exampleData={leaveHistory} />
         </CCardBody>
         <CCardFooter>
           <CRow
@@ -233,7 +235,6 @@ const CEODashboard = () => {
           </CRow>
         </CCardFooter>
       </CCard>
-      <WidgetsBrand className="mb-4" withCharts />
       <CRow>
         <CCol xs>
           <CCard className="mb-4">

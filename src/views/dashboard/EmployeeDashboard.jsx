@@ -16,42 +16,65 @@ import {
   CTableRow,
 } from '@coreui/react'
 import { Apply_leave } from './Apply_leave'
+import { toast } from 'react-toastify'
+import axios from 'axios'
 
 const EmployeeDashboard = () => {
   const [employeeLeaveData, setEmployeeLeaveData] = useState({
-    totalRemaining: 10,
+    remaining_leaves: 10,
     totalPrecent: 0,
-    casualRemaining: 0,
-    casualPrecent: 0,
-    annualRemaining: 0,
-    annualPrecent: 0,
-    unpaid: 0,
+    more_casual_leaves: 0,
+    more_annual_leaves: 0,
+    no_pay_count: 0,
+    annual_leaves: 0,
+    casual_leaves: 0,
   })
 
+  useEffect(() => {
+    fetchEmployeeLeaveData()
+  }, [])
+
+  const fetchEmployeeLeaveData = async () => {
+    // Fetch employee leave data
+    axios
+      .get('/leave-details/user')
+      .then((response) => {
+        //console.log('+++++++++++++++++++++++++++++', response.data.data.leave_details)
+        setEmployeeLeaveData(response.data.data.leave_details)
+      })
+      .catch((error) => {
+        console.error(error)
+        toast.error('Oops! Failed to fetch employee leave data')
+      })
+  }
+
   const progressExample = [
-    { 
-      title: 'Total Paid Remaining', 
-      value: employeeLeaveData.totalRemaining, 
-      percent: employeeLeaveData.totalPrecent, 
-      color: 'success' 
+    {
+      title: 'Total Paid Remaining',
+      value: employeeLeaveData.remaining_leaves,
+      percent:
+        (employeeLeaveData.remaining_leaves /
+          (employeeLeaveData.annual_leaves + employeeLeaveData.casual_leaves)) *
+        100,
+      color: 'success',
     },
-    { 
-      title: 'Casual Remaining', 
-      value: employeeLeaveData.casualRemaining, 
-      percent: employeeLeaveData.casualPrecent, 
-      color: 'info' 
+    {
+      title: 'Casual Remaining',
+      value: employeeLeaveData.more_casual_leaves,
+      percent: ((employeeLeaveData.more_casual_leaves / employeeLeaveData.casual_leaves) * 100),
+      color: 'info',
     },
-    { 
-      title: 'Annual Remaining', 
-      value: employeeLeaveData.annualRemaining, 
-      percent: employeeLeaveData.annualPrecent, 
-      color: 'warning' 
+    {
+      title: 'Annual Remaining',
+      value: employeeLeaveData.more_annual_leaves,
+      percent: ((employeeLeaveData.more_annual_leaves / employeeLeaveData.annual_leaves) * 100),
+      color: 'warning',
     },
-    { 
-      title: 'Unpaid Leaves', 
-      value: employeeLeaveData.unpaid,
-      percent: 0, // Added missing percent
-      color: 'danger' 
+    {
+      title: 'Unpaid Leaves',
+      value: employeeLeaveData.no_pay_count,
+      percent: 0,
+      color: 'danger',
     },
   ]
 
@@ -99,7 +122,7 @@ const EmployeeDashboard = () => {
     return new Date(dateString).toLocaleDateString('en-US', {
       year: 'numeric',
       month: 'short',
-      day: 'numeric'
+      day: 'numeric',
     })
   }
 
@@ -132,14 +155,9 @@ const EmployeeDashboard = () => {
               >
                 <div className="text-body-secondary">{item.title}</div>
                 <div className="fw-semibold text-truncate">
-                  {item.value} {item.percent > 0 && `(${item.percent}%)`}
+                  {item.value} {item.percent > 0 && `(${item.percent.toFixed(2)}%)`}
                 </div>
-                <CProgress 
-                  thin 
-                  className="mt-2" 
-                  color={item.color} 
-                  value={item.percent || 0}
-                />
+                <CProgress thin className="mt-2" color={item.color} value={item.percent || 0} />
               </CCol>
             ))}
           </CRow>
@@ -154,21 +172,25 @@ const EmployeeDashboard = () => {
               <CTableHead className="text-nowrap">
                 <CTableRow>
                   <CTableHeaderCell className="bg-body-tertiary text-center">Type</CTableHeaderCell>
+                  <CTableHeaderCell className="bg-body-tertiary text-center">From</CTableHeaderCell>
                   <CTableHeaderCell className="bg-body-tertiary text-center">
-                    From
+                    Until
                   </CTableHeaderCell>
-                  <CTableHeaderCell className="bg-body-tertiary text-center">Until</CTableHeaderCell>
                   <CTableHeaderCell className="bg-body-tertiary text-center">
                     Manager
                   </CTableHeaderCell>
-                  <CTableHeaderCell className="bg-body-tertiary text-center">Status</CTableHeaderCell>
+                  <CTableHeaderCell className="bg-body-tertiary text-center">
+                    Status
+                  </CTableHeaderCell>
                 </CTableRow>
               </CTableHead>
               <CTableBody>
                 {tableExample.map((item, index) => (
                   <CTableRow key={index}>
-                    <CTableDataCell className='text-center'>
-                      <div>{item.type} - {item.isHalfDay ? 'Half Day' : 'Full Day'}</div>
+                    <CTableDataCell className="text-center">
+                      <div>
+                        {item.type} - {item.isHalfDay ? 'Half Day' : 'Full Day'}
+                      </div>
                       <div className="small text-body-secondary text-nowrap">
                         Applied: {formatDate(item.appliedOn)}
                       </div>
@@ -179,11 +201,11 @@ const EmployeeDashboard = () => {
                     <CTableDataCell className="text-center">
                       {formatDate(item.endDate)}
                     </CTableDataCell>
+                    <CTableDataCell className="text-center">{item.approvedBy}</CTableDataCell>
                     <CTableDataCell className="text-center">
-                      {item.approvedBy}
-                    </CTableDataCell>
-                    <CTableDataCell className="text-center">
-                      <div className={`text-${item.status.toLowerCase() === 'approved' ? 'success' : 'warning'}`}>
+                      <div
+                        className={`text-${item.status.toLowerCase() === 'approved' ? 'success' : 'warning'}`}
+                      >
                         {item.status}
                       </div>
                       <div className="small text-body-secondary text-nowrap">
