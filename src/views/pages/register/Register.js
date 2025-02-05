@@ -1,4 +1,4 @@
-import React, { use, useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import {
   CButton,
   CCard,
@@ -15,7 +15,14 @@ import {
   CRow,
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
-import { cibAuth0, cibBuysellads, cilCalendar, cilLockLocked, cilUser } from '@coreui/icons'
+import {
+  cibAuth0,
+  cibBuysellads,
+  cilCalendar,
+  cilFingerprint,
+  cilLockLocked,
+  cilUser,
+} from '@coreui/icons'
 import icon from '../../../assets/images/Aahaas_Primary_logo.png'
 import { toast } from 'react-toastify'
 import axios from 'axios'
@@ -27,30 +34,35 @@ const Register = () => {
   const [password, setPassword] = React.useState('')
   const [confirmPassword, setConfirmPassword] = React.useState('')
   const [isManager, setIsManager] = React.useState(false)
-  const [managerEmail, setManagerEmail] = React.useState('')
+  const [finger_printid, setFinger_printid] = React.useState('')
   const [name, setName] = React.useState('')
-  const [managers, setManagers] = React.useState([])
-  const [selectedManager, setSelectedManager] = React.useState('')
+  const [selectedDepartment, setSelectedDepartment] = React.useState('')
   const [joiningDate, setJoiningDate] = React.useState('')
+  const [departments, setDepartments] = useState([
+    { id: 1, name: 'HR' },
+    { id: 2, name: 'Finance' },
+    { id: 3, name: 'IT' },
+    { id: 4, name: 'Travel Experience' },
+    { id: 5, name: 'Marketing' },
+  ])
 
   useEffect(() => {
-    getManagers();
     const todate = new Date()
     const dd = String(todate.getDate()).padStart(2, '0')
     const mm = String(todate.getMonth() + 1).padStart(2, '0')
     const yyyy = todate.getFullYear()
 
     setJoiningDate(`${yyyy}-${mm}-${dd}`)
-  },[])
+  }, [])
 
   const getManagers = async () => {
     try {
-      await axios.get('/managers').then((response) => {
-        setManagers(response.data.manager_details)
+      await axios.get('/departments').then((response) => {
+        setDepartments(response.data.departments)
         console.log(response.data)
       })
     } catch (error) {
-      toast.error('Failed to fetch managers')
+      toast.error('Failed to fetch departments')
       console.error(error)
     }
   }
@@ -60,53 +72,65 @@ const Register = () => {
     setIsManager(e.target.value === 'true')
   }
 
-  const handleManagerSelect = (e) => {
-    setSelectedManager(e.target.value)
+  const handleDepartmentSelect = (e) => {
+    setSelectedDepartment(e.target.value)
   }
 
   const handleRegister = () => {
     if (!email || !password || !confirmPassword || !name || !joiningDate) {
       toast.error('Please fill in all fields')
       return
-    }else if (password !== confirmPassword) {
+    } else if (password !== confirmPassword) {
       toast.error('Passwords do not match')
       return
-    }//check whethet email ends with aahaas.com
+    } //check whethet email ends with aahaas.com
     else if (!email.endsWith('aahaas.com')) {
       toast.error('Please use an Aahaas email')
       return
-    }else if (isManager && !selectedManager) {
-      toast.error('Please select a manager')
+    } else if (!selectedDepartment) {
+      toast.error('Please select a department')
       return
-    }else if (isManager && selectedManager === email) {
-      toast.error('You cannot be your own manager')
+    } //check if the joining date is a valid date type
+    else if (isNaN(Date.parse(joiningDate))) {
+      toast.error('Please enter a valid joining date')
       return
-    }else if (isManager && !managerEmail) {
-      toast.error('Please enter your manager email')
+    } else if (password.length < 8) {
+      toast.error('Password must be at least 8 characters')
       return
-    }else {
-      axios.post('/register', {
-        name,
-        email,
-        password,
-        isManager,
-        managerEmail,
-        selectedManager,
-        joiningDate,
-      }).then((response) => {
-        console.log(response)
-        Swal.fire({
-          title: "Good job!",
-          text: "Wait until your account is approved by the manager",
-          icon: "success",
-          confirmButtonColor: "#ed4242",
-        });
-      }).catch((error) => {
-        console.error(error)
-        toast.error('Failed to create account')
-      });
+    } else if (password !== confirmPassword) {
+      toast.error('Passwords do not match')
+      return
+    } else {
+      const formData = new FormData()
+      formData.append('name', name)
+      formData.append('email', email)
+      formData.append('password', password)
+      formData.append('isManager', isManager)
+      formData.append('departmentId', selectedDepartment)
+      formData.append('joinned_date', joiningDate)
+      formData.append('role_id', 3)
+      formData.append('finger_printid', finger_printid)
+
+      axios
+        .post('/register', formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        })
+        .then((response) => {
+          console.log(response)
+          Swal.fire({
+            title: 'Good job!',
+            text: 'Wait until your account is approved by the manager',
+            icon: 'success',
+            confirmButtonColor: '#ed4242',
+          })
+        })
+        .catch((error) => {
+          console.error(error)
+          toast.error('Failed to create account')
+        })
     }
-    
   }
 
   return (
@@ -162,26 +186,33 @@ const Register = () => {
                       ]}
                     />
                   </CInputGroup>
-                  {!isManager && (
-                    <CInputGroup className="mb-3">
-                      <CInputGroupText>
-                        <CIcon icon={cilUser} />
-                      </CInputGroupText>
-                      <CFormSelect
-                        onChange={handleManagerSelect}
-                        value={selectedManager}
-                        aria-label="Select manager"
-                        options={[
-                          { label: 'Select manager', value: '' },
-                          ...(Array.isArray(managers) ? managers.map((manager) => ({
-                            label: manager.name,
-                            value: manager.id,
-                          })) : []),
-                        ]}
-                      />
-                    </CInputGroup>
-                  )}
-
+                  <CInputGroup className="mb-3">
+                    <CInputGroupText>
+                      <CIcon icon={cilUser} />
+                    </CInputGroupText>
+                    <CFormSelect
+                      onChange={handleDepartmentSelect}
+                      value={selectedDepartment}
+                      aria-label="Select department"
+                      options={[
+                        { label: 'Select department', value: '' },
+                        ...departments.map((department) => ({
+                          label: department.name,
+                          value: department.id,
+                        })),
+                      ]}
+                    />
+                  </CInputGroup>
+                  <CInputGroup className="mb-3">
+                    <CInputGroupText>
+                      <CIcon icon={cilFingerprint} />
+                    </CInputGroupText>
+                    <CFormInput
+                      onChange={(e) => setFinger_printid(e.target.value)}
+                      placeholder="Finger print id"
+                      autoComplete="Finger print id"
+                    />
+                  </CInputGroup>
                   <CInputGroup className="mb-3">
                     <CInputGroupText>
                       <CIcon icon={cilCalendar} />
@@ -224,9 +255,18 @@ const Register = () => {
                       Create Account
                     </CButton>
                   </div>
-                  <Link to="/login" className="text-center mt-3" style={{ color: '#0066CC',textAlign: 'center',width: '100%',display: 'block' }}>
+                  <Link
+                    to="/login"
+                    className="text-center mt-3"
+                    style={{
+                      color: '#0066CC',
+                      textAlign: 'center',
+                      width: '100%',
+                      display: 'block',
+                    }}
+                  >
                     Already have an account? Login
-                  </Link>  
+                  </Link>
                 </CForm>
               </CCardBody>
             </CCard>

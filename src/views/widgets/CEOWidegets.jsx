@@ -13,7 +13,7 @@ import {
 import { getStyle } from '@coreui/utils'
 import { CChartBar, CChartLine } from '@coreui/react-chartjs'
 
-const WidgetsDropdown = (props) => {
+const CEOWidgetsDropdown = (props) => {
   const widgetChartRef1 = useRef(null)
   const widgetChartRef2 = useRef(null)
 
@@ -42,28 +42,33 @@ const WidgetsDropdown = (props) => {
           color="primary"
           value={
             <>
-              26K{' '}
-              <span className="fs-6 fw-normal">
-                {/* (-12.4% <CIcon icon={cilArrowBottom} />) */}
-              </span>
+              Travel Experience
+              <span className="fs-6 fw-normal d-block">On Leave : 5</span>
+              <span className="fs-6 fw-normal d-block">Half Day : 5</span>
             </>
           }
-          title="Pending Registrations"
-         
           chart={
             <CChartLine
-              ref={widgetChartRef1}
-              className="mt-3 mx-3"
+              className="mt-3"
               style={{ height: '70px' }}
               data={{
-                labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+                labels: [
+                  'Monday',
+                  'Tuesday',
+                  'Wednesday',
+                  'Thursday',
+                  'Friday',
+                  'Saturday',
+                  'Sunday',
+                ],
                 datasets: [
                   {
                     label: 'My First dataset',
-                    backgroundColor: 'transparent',
+                    backgroundColor: 'rgba(255,255,255,.2)',
                     borderColor: 'rgba(255,255,255,.55)',
-                    pointBackgroundColor: getStyle('--cui-primary'),
-                    data: [65, 59, 84, 84, 51, 55, 40],
+                    //Leaves Count
+                    data: [5, 1, 7, 4, 4, 2, 0],
+                    fill: true,
                   },
                 ],
               }}
@@ -76,36 +81,19 @@ const WidgetsDropdown = (props) => {
                 maintainAspectRatio: false,
                 scales: {
                   x: {
-                    border: {
-                      display: false,
-                    },
-                    grid: {
-                      display: false,
-                      drawBorder: false,
-                    },
-                    ticks: {
-                      display: false,
-                    },
+                    display: false,
                   },
                   y: {
-                    min: 30,
-                    max: 89,
                     display: false,
-                    grid: {
-                      display: false,
-                    },
-                    ticks: {
-                      display: false,
-                    },
                   },
                 },
                 elements: {
                   line: {
-                    borderWidth: 1,
+                    borderWidth: 2,
                     tension: 0.4,
                   },
                   point: {
-                    radius: 4,
+                    radius: 0,
                     hitRadius: 10,
                     hoverRadius: 4,
                   },
@@ -115,34 +103,39 @@ const WidgetsDropdown = (props) => {
           }
         />
       </CCol>
-      
+
       <CCol sm={6} xl={4} xxl={3}>
         <CWidgetStatsA
           color="info"
           value={
             <>
-              $6.200{' '}
-              <span className="fs-6 fw-normal">
-                {/* (40.9% <CIcon icon={cilArrowTop} />) */}
-              </span>
+              Accounting
+              <span className="fs-6 fw-normal d-block">On Leave : 5</span>
+              <span className="fs-6 fw-normal d-block">Half Day : 5</span>
             </>
           }
-          title="Pending Leave Requests"
-          
           chart={
             <CChartLine
-              ref={widgetChartRef2}
-              className="mt-3 mx-3"
+              className="mt-3"
               style={{ height: '70px' }}
               data={{
-                labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+                labels: [
+                  'Monday',
+                  'Tuesday',
+                  'Wednesday',
+                  'Thursday',
+                  'Friday',
+                  'Saturday',
+                  'Sunday',
+                ],
                 datasets: [
                   {
                     label: 'My First dataset',
-                    backgroundColor: 'transparent',
+                    backgroundColor: 'rgba(255,255,255,.2)',
                     borderColor: 'rgba(255,255,255,.55)',
-                    pointBackgroundColor: getStyle('--cui-info'),
-                    data: [1, 18, 9, 17, 34, 22, 11],
+                    //Leaves Count
+                    data: [5, 1, 7, 4, 4, 2, 0],
+                    fill: true,
                   },
                 ],
               }}
@@ -155,35 +148,19 @@ const WidgetsDropdown = (props) => {
                 maintainAspectRatio: false,
                 scales: {
                   x: {
-                    border: {
-                      display: false,
-                    },
-                    grid: {
-                      display: false,
-                      drawBorder: false,
-                    },
-                    ticks: {
-                      display: false,
-                    },
+                    display: false,
                   },
                   y: {
-                    min: -9,
-                    max: 39,
                     display: false,
-                    grid: {
-                      display: false,
-                    },
-                    ticks: {
-                      display: false,
-                    },
                   },
                 },
                 elements: {
                   line: {
-                    borderWidth: 1,
+                    borderWidth: 2,
+                    tension: 0.4,
                   },
                   point: {
-                    radius: 4,
+                    radius: 0,
                     hitRadius: 10,
                     hoverRadius: 4,
                   },
@@ -198,26 +175,32 @@ const WidgetsDropdown = (props) => {
           color="warning"
           value={
             <>
-              2.49%{' '}
-              <span className="fs-6 fw-normal">
-                Employees
-              </span>
+              Supplier
+              <span className="fs-6 fw-normal d-block">On Leave : 5</span>
+              <span className="fs-6 fw-normal d-block">Half Day : 5</span>
             </>
           }
-          title="On Leave Today"
-          
           chart={
             <CChartLine
               className="mt-3"
               style={{ height: '70px' }}
               data={{
-                labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+                labels: [
+                  'Monday',
+                  'Tuesday',
+                  'Wednesday',
+                  'Thursday',
+                  'Friday',
+                  'Saturday',
+                  'Sunday',
+                ],
                 datasets: [
                   {
                     label: 'My First dataset',
                     backgroundColor: 'rgba(255,255,255,.2)',
                     borderColor: 'rgba(255,255,255,.55)',
-                    data: [78, 81, 80, 45, 34, 12, 40],
+                    //Leaves Count
+                    data: [5, 1, 7, 4, 4, 2, 0],
                     fill: true,
                   },
                 ],
@@ -258,76 +241,126 @@ const WidgetsDropdown = (props) => {
           color="danger"
           value={
             <>
-              44K{' '}
-              <span className="fs-6 fw-normal">
-                Employees
-              </span>
+              Marketing
+              <span className="fs-6 fw-normal d-block">On Leave : 5</span>
+              <span className="fs-6 fw-normal d-block">Half Day : 5</span>
             </>
           }
-          title="On Half Day Today"
-          
           chart={
-            <CChartBar
-              className="mt-3 mx-3"
+            <CChartLine
+              className="mt-3"
               style={{ height: '70px' }}
               data={{
                 labels: [
-                  'January',
-                  'February',
-                  'March',
-                  'April',
-                  'May',
-                  'June',
-                  'July',
-                  'August',
-                  'September',
-                  'October',
-                  'November',
-                  'December',
-                  'January',
-                  'February',
-                  'March',
-                  'April',
+                  'Monday',
+                  'Tuesday',
+                  'Wednesday',
+                  'Thursday',
+                  'Friday',
+                  'Saturday',
+                  'Sunday',
                 ],
                 datasets: [
                   {
                     label: 'My First dataset',
                     backgroundColor: 'rgba(255,255,255,.2)',
                     borderColor: 'rgba(255,255,255,.55)',
-                    data: [78, 81, 80, 45, 34, 12, 40, 85, 65, 23, 12, 98, 34, 84, 67, 82],
-                    barPercentage: 0.6,
+                    //Leaves Count
+                    data: [5, 1, 7, 4, 4, 2, 0],
+                    fill: true,
                   },
                 ],
               }}
               options={{
-                maintainAspectRatio: false,
                 plugins: {
                   legend: {
                     display: false,
                   },
                 },
+                maintainAspectRatio: false,
                 scales: {
                   x: {
-                    grid: {
-                      display: false,
-                      drawTicks: false,
-                    },
-                    ticks: {
-                      display: false,
-                    },
+                    display: false,
                   },
                   y: {
-                    border: {
-                      display: false,
-                    },
-                    grid: {
-                      display: false,
-                      drawBorder: false,
-                      drawTicks: false,
-                    },
-                    ticks: {
-                      display: false,
-                    },
+                    display: false,
+                  },
+                },
+                elements: {
+                  line: {
+                    borderWidth: 2,
+                    tension: 0.4,
+                  },
+                  point: {
+                    radius: 0,
+                    hitRadius: 10,
+                    hoverRadius: 4,
+                  },
+                },
+              }}
+            />
+          }
+        />
+      </CCol>
+      <CCol sm={6} xl={4} xxl={3}>
+        <CWidgetStatsA
+          color="success"
+          value={
+            <>
+              IT
+              <span className="fs-6 fw-normal d-block">On Leave : 5</span>
+              <span className="fs-6 fw-normal d-block">Half Day : 5</span>
+            </>
+          }
+          chart={
+            <CChartLine
+              className="mt-3"
+              style={{ height: '70px' }}
+              data={{
+                labels: [
+                  'Monday',
+                  'Tuesday',
+                  'Wednesday',
+                  'Thursday',
+                  'Friday',
+                  'Saturday',
+                  'Sunday',
+                ],
+                datasets: [
+                  {
+                    label: 'My First dataset',
+                    backgroundColor: 'rgba(255,255,255,.2)',
+                    borderColor: 'rgba(255,255,255,.55)',
+                    //Leaves Count
+                    data: [5, 1, 7, 4, 4, 2, 0],
+                    fill: true,
+                  },
+                ],
+              }}
+              options={{
+                plugins: {
+                  legend: {
+                    display: false,
+                  },
+                },
+                maintainAspectRatio: false,
+                scales: {
+                  x: {
+                    display: false,
+                  },
+                  y: {
+                    display: false,
+                  },
+                },
+                elements: {
+                  line: {
+                    borderWidth: 2,
+                    tension: 0.4,
+                  },
+                  point: {
+                    radius: 0,
+                    hitRadius: 10,
+                    hoverRadius: 4,
                   },
                 },
               }}
@@ -339,9 +372,9 @@ const WidgetsDropdown = (props) => {
   )
 }
 
-WidgetsDropdown.propTypes = {
+CEOWidgetsDropdown.propTypes = {
   className: PropTypes.string,
   withCharts: PropTypes.bool,
 }
 
-export default WidgetsDropdown
+export default CEOWidgetsDropdown

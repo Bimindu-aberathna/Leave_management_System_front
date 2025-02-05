@@ -7,12 +7,27 @@
 }
 
 #loginBtn{
-    color: #ed4242
+    color: #ed4242;
+    border: 1px solid #ed4242;
 }
 #loginBtn:hover{
     border: 1px solid white;
     transform: scale(1.05);
-    background-color: #ed4242;
     color: white;
     transition: 0.5s;
+}
+
+.title-login {
+    display: none;
+}
+
+@media screen and (min-width: 768px) {
+    .title-login {
+        display: block;
+        position: absolute;
+        top: 10%;
+        width: 100%;
+        text-align: center;
+        color: rgb(135, 135, 135);
+    }
 }

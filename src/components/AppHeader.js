@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { NavLink, useNavigate } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import {
@@ -15,6 +15,7 @@ import {
   useColorModes,
   CButton,
   CBadge,
+  CNav,
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
 import {
@@ -30,15 +31,31 @@ import {
 import { AppBreadcrumb } from './index'
 import { AppHeaderDropdown } from './header/index'
 import { logout } from '../store' // Import logout action
+import headerLogo from '../assets/images/Aahaas_Primary_logo.png'
+import './AppHeader.css'
 
 const AppHeader = () => {
   const headerRef = useRef()
   const { colorMode, setColorMode } = useColorModes('coreui-free-react-admin-template-theme')
+  const [shake, setShake] = useState(false)
+
+  //shake
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setShake(true)
+      setTimeout(() => {
+        setShake(false)
+      }, 500)
+    }, 5000)
+    return () => clearInterval(interval)
+  }, [])
 
   // Get user info from Redux state
   const userName = useSelector((state) => state.app.userName)
-  const role = useSelector((state) => state.app.role) // Assuming role exists in state
+  const role = useSelector((state) => state.app.role)
   const sidebarShow = useSelector((state) => state.sidebarShow)
+  const notificationCount = useSelector((state) => state.app.notificationCount)
+  // console.log('notificationCount', role) ;
 
   const dispatch = useDispatch()
 
@@ -67,23 +84,45 @@ const AppHeader = () => {
         <CHeaderNav className="d-none d-md-flex">
           <CNavItem>
             <CNavLink to="/dashboard" as={NavLink}>
-              Dashboard
+              <img src={headerLogo} alt="Aahaas" style={{ height: '50px' }} />
+            </CNavLink>
+          </CNavItem>
+          <CNavItem>
+            <CNavLink>
+              <p
+                className="h-100 d-flex justify-content-center align-items-center mt-2"
+                style={{ fontWeight: 'bold', fontSize: '22px' }}
+              >
+                {String(role.designation).toUpperCase()}
+              </p>
             </CNavLink>
           </CNavItem>
         </CHeaderNav>
         <CHeaderNav className="ms-auto">
           <CNavItem>
-            <CNavLink href="#" style={{ position: 'relative', display: 'inline-block' }}>
-              <CIcon icon={cilBell} size="lg" />
+            {/* navigate to "/notifications" */}
+            <CNav
+              item
+              className="d-md-down-none"
+              as={NavLink}
+              to="/notifications"
+              style={{ position: 'relative', display: 'inline-block', marginRight: '1rem' }}
+            >
+              <CIcon
+                icon={cilBell}
+                size="xl"
+                style={{ marginTop: '8px' }}
+                className={shake ? 'shake' : ''}
+              />
               <CBadge
                 shape="pill"
                 color="danger"
                 className="ms-2"
-                style={{ position: 'absolute', top: '-5px', right: '-2px' }}
+                style={{ position: 'absolute', top: '-5px', right: '-8px' }}
               >
-                5
+                {notificationCount}
               </CBadge>
-            </CNavLink>
+            </CNav>
           </CNavItem>
           <CNavItem>
             <CNavLink href="#">
@@ -159,7 +198,9 @@ const AppHeader = () => {
               </p>
             </CNavItem>
           ) : null}
-          {userName || role ? <AppHeaderDropdown handleLogout={handleLogout} /> : null}
+          {userName || role ? (
+            <AppHeaderDropdown notificationCount={notificationCount} handleLogout={handleLogout} />
+          ) : null}
         </CHeaderNav>
       </CContainer>
       <CContainer className="px-4" fluid>

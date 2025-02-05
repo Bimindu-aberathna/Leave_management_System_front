@@ -1,90 +1,90 @@
-import React, { useEffect, useRef } from 'react'
-
+import React, { useEffect, useRef, useState } from 'react'
 import { CChartLine } from '@coreui/react-chartjs'
 import { getStyle } from '@coreui/utils'
+import { CFormCheck } from '@coreui/react'
 
-const MainChart = () => {
+
+
+// Predefined colors for each department
+const departmentColors = {
+  'Sales': { rgb: '220, 53, 69', name: '--cui-danger' },
+  'User Experience': { rgb: '32, 201, 151', name: '--cui-success' },
+  'Accounting': { rgb: '13, 110, 253', name: '--cui-primary' },
+  'Customer Support': { rgb: '255, 193, 7', name: '--cui-warning' },
+  'IT': { rgb: '23, 162, 184', name: '--cui-info' }
+}
+
+const MainChart = ({exampleData}) => {
   const chartRef = useRef(null)
+  const [visibleDepartments, setVisibleDepartments] = useState(
+    Object.fromEntries(exampleData.map(item => [item.department, true]))
+  )
 
   useEffect(() => {
-    document.documentElement.addEventListener('ColorSchemeChange', () => {
+    const handleColorSchemeChange = () => {
       if (chartRef.current) {
         setTimeout(() => {
-          chartRef.current.options.scales.x.grid.borderColor = getStyle(
-            '--cui-border-color-translucent',
-          )
-          chartRef.current.options.scales.x.grid.color = getStyle('--cui-border-color-translucent')
-          chartRef.current.options.scales.x.ticks.color = getStyle('--cui-body-color')
-          chartRef.current.options.scales.y.grid.borderColor = getStyle(
-            '--cui-border-color-translucent',
-          )
-          chartRef.current.options.scales.y.grid.color = getStyle('--cui-border-color-translucent')
-          chartRef.current.options.scales.y.ticks.color = getStyle('--cui-body-color')
+          const scales = chartRef.current.options.scales;
+          ['x', 'y'].forEach(axis => {
+            scales[axis].grid.borderColor = getStyle('--cui-border-color-translucent')
+            scales[axis].grid.color = getStyle('--cui-border-color-translucent')
+            scales[axis].ticks.color = getStyle('--cui-body-color')
+          })
           chartRef.current.update()
         })
       }
-    })
-  }, [chartRef])
+    }
 
-  const random = () => Math.round(Math.random() * 100)
+    document.documentElement.addEventListener('ColorSchemeChange', handleColorSchemeChange)
+    return () => {
+      document.documentElement.removeEventListener('ColorSchemeChange', handleColorSchemeChange)
+    }
+  }, [])
+
+  const handleCheckboxChange = (department) => {
+    setVisibleDepartments(prev => ({
+      ...prev,
+      [department]: !prev[department]
+    }))
+  }
+
+  const filteredData = exampleData.filter(item => visibleDepartments[item.department])
 
   return (
-    <>
+    <div className="p-4">
+      <div className="d-flex flex-wrap flex-row gap-5">
+        {exampleData.map((item) => (
+          <CFormCheck
+            key={item.department}
+            id={`checkbox-${item.department}`}
+            label={item.department}
+            checked={visibleDepartments[item.department]}
+            onChange={() => handleCheckboxChange(item.department)}
+          />
+        ))}
+      </div>
+      
       <CChartLine
         ref={chartRef}
         style={{ height: '300px', marginTop: '40px' }}
         data={{
-          labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
-          datasets: [
-            {
-              label: 'My First dataset',
-              backgroundColor: `rgba(${getStyle('--cui-info-rgb')}, .1)`,
-              borderColor: getStyle('--cui-info'),
-              pointHoverBackgroundColor: getStyle('--cui-info'),
-              borderWidth: 2,
-              data: [
-                random(50, 200),
-                random(50, 200),
-                random(50, 200),
-                random(50, 200),
-                random(50, 200),
-                random(50, 200),
-                random(50, 200),
-              ],
-              fill: true,
-            },
-            {
-              label: 'My Second dataset',
-              backgroundColor: 'transparent',
-              borderColor: getStyle('--cui-success'),
-              pointHoverBackgroundColor: getStyle('--cui-success'),
-              borderWidth: 2,
-              data: [
-                random(50, 200),
-                random(50, 200),
-                random(50, 200),
-                random(50, 200),
-                random(50, 200),
-                random(50, 200),
-                random(50, 200),
-              ],
-            },
-            {
-              label: 'My Third dataset',
-              backgroundColor: 'transparent',
-              borderColor: getStyle('--cui-danger'),
-              pointHoverBackgroundColor: getStyle('--cui-danger'),
-              borderWidth: 1,
-              borderDash: [8, 5],
-              data: [65, 65, 65, 65, 65, 65, 65],
-            },
-          ],
+          labels: Array.from({ length: 30 }, (_, i) => `Day ${i + 1}`),
+          datasets: filteredData.map((item) => ({
+            label: item.department,
+            backgroundColor: `rgba(${departmentColors[item.department].rgb}, .1)`,
+            borderColor: getStyle(departmentColors[item.department].name),
+            pointHoverBackgroundColor: getStyle(departmentColors[item.department].name),
+            borderWidth: 2,
+            data: item.history,
+            fill: true,
+          })),
         }}
         options={{
           maintainAspectRatio: false,
           plugins: {
             legend: {
-              display: false,
+              display: true,
+              position: 'top',
             },
           },
           scales: {
@@ -105,7 +105,7 @@ const MainChart = () => {
               grid: {
                 color: getStyle('--cui-border-color-translucent'),
               },
-              max: 250,
+              max: 40,
               ticks: {
                 color: getStyle('--cui-body-color'),
                 maxTicksLimit: 5,
@@ -126,7 +126,7 @@ const MainChart = () => {
           },
         }}
       />
-    </>
+    </div>
   )
 }
 
