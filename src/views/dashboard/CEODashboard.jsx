@@ -44,13 +44,6 @@ import {
   cilTruck,
 } from '@coreui/icons'
 
-import avatar1 from 'src/assets/images/avatars/1.jpg'
-import avatar2 from 'src/assets/images/avatars/2.jpg'
-import avatar3 from 'src/assets/images/avatars/3.jpg'
-import avatar4 from 'src/assets/images/avatars/4.jpg'
-import avatar5 from 'src/assets/images/avatars/5.jpg'
-import avatar6 from 'src/assets/images/avatars/6.jpg'
-
 import WidgetsBrand from '../widgets/WidgetsBrand'
 import MainChart from './MainChart'
 
@@ -63,132 +56,140 @@ const WidgetDataSample = [
 ]
 
 const leaveHistory = [
-  {department: 'Sales', history: [1,5,2,5,3,4,5,6,7,8,6,7,3,4,6,2,1,0,0,4,5,6,7,8,9,5,4,3,2,1]},
-  {department: 'User Experience', history: [2,5,3,4,5,6,7,8,9,5,4,3,2,1,0,0,4,5,6,7,8,9,5,4,3,2,1,0,0,4]},
-  {department: 'Accounting', history: [3,4,5,6,7,8,9,5,4,3,2,1,0,0,4,5,6,7,8,9,5,4,3,2,1,0,0,4,5,6,7]},
-  {department: 'Customer Support', history: [4,5,6,7,8,9,5,4,3,2,1,0,0,4,5,6,7,8,9,5,4,3,2,1,0,0,4,5,6,7,8]},
-  {department: 'IT', history: [5,6,7,8,9,5,4,3,2,1,0,0,4,5,6,7,8,9,5,4,3,2,1,0,0,4,5,6,7,8,9]},
+  {
+    department: 'Sales',
+    history: [
+      1, 5, 2, 5, 3, 4, 5, 6, 7, 8, 6, 7, 3, 4, 6, 2, 1, 0, 0, 4, 5, 6, 7, 8, 9, 5, 4, 3, 2, 1,
+    ],
+  },
+  {
+    department: 'User Experience',
+    history: [
+      2, 5, 3, 4, 5, 6, 7, 8, 9, 5, 4, 3, 2, 1, 0, 0, 4, 5, 6, 7, 8, 9, 5, 4, 3, 2, 1, 0, 0, 4,
+    ],
+  },
+  {
+    department: 'Accounting',
+    history: [
+      3, 4, 5, 6, 7, 8, 9, 5, 4, 3, 2, 1, 0, 0, 4, 5, 6, 7, 8, 9, 5, 4, 3, 2, 1, 0, 0, 4, 5, 6, 7,
+    ],
+  },
+  {
+    department: 'Customer Support',
+    history: [
+      4, 5, 6, 7, 8, 9, 5, 4, 3, 2, 1, 0, 0, 4, 5, 6, 7, 8, 9, 5, 4, 3, 2, 1, 0, 0, 4, 5, 6, 7, 8,
+    ],
+  },
+  {
+    department: 'IT',
+    history: [
+      5, 6, 7, 8, 9, 5, 4, 3, 2, 1, 0, 0, 4, 5, 6, 7, 8, 9, 5, 4, 3, 2, 1, 0, 0, 4, 5, 6, 7, 8, 9,
+    ],
+  },
 ]
 
 const CEODashboard = () => {
-  const progressExample = [
-    { title: 'Visits', value: '29.703 Users', percent: 40, color: 'success' },
-    { title: 'Unique', value: '24.093 Users', percent: 20, color: 'info' },
-    { title: 'Pageviews', value: '78.706 Views', percent: 60, color: 'warning' },
-    { title: 'New Users', value: '22.123 Users', percent: 80, color: 'danger' },
-    { title: 'Bounce Rate', value: 'Average Rate', percent: 40.15, color: 'primary' },
-  ]
-
-  const progressGroupExample1 = [
-    { title: 'Monday', value1: 34, value2: 78 },
-    { title: 'Tuesday', value1: 56, value2: 94 },
-    { title: 'Wednesday', value1: 12, value2: 67 },
-    { title: 'Thursday', value1: 43, value2: 91 },
-    { title: 'Friday', value1: 22, value2: 73 },
-    { title: 'Saturday', value1: 53, value2: 82 },
-    { title: 'Sunday', value1: 9, value2: 69 },
-  ]
-
-  const progressGroupExample2 = [
-    { title: 'Male', icon: cilUser, value: 53 },
-    { title: 'Female', icon: cilUserFemale, value: 43 },
-  ]
-
-  const progressGroupExample3 = [
-    { title: 'Organic Search', icon: cibGoogle, percent: 56, value: '191,235' },
-    { title: 'Facebook', icon: cibFacebook, percent: 15, value: '51,223' },
-    { title: 'Twitter', icon: cibTwitter, percent: 11, value: '37,564' },
-    { title: 'LinkedIn', icon: cibLinkedin, percent: 8, value: '27,319' },
-  ]
-
+  const [selectedTab, setSelectedTab] = React.useState(0)
   const tableExample = [
     {
-      avatar: { src: avatar1, status: 'success' },
-      user: {
-        name: 'Yiorgos Avraamu',
-        new: true,
-        registered: 'Jan 1, 2023',
-      },
-      country: { name: 'USA', flag: cifUs },
-      usage: {
-        value: 50,
-        period: 'Jun 11, 2023 - Jul 10, 2023',
-        color: 'success',
-      },
-      payment: { name: 'Mastercard', icon: cibCcMastercard },
-      activity: '10 sec ago',
+      department: 'Sales',
+      leaveData: [
+        {
+          name: 'John Doe',
+          type: 'Half Day',
+          approvedBy: 'Jane Doe',
+        },
+        {
+          name: 'Jane Doe',
+          type: 'Full Day',
+          approvedBy: 'John Doe',
+        },
+        {
+          name: 'Alice',
+          type: 'Half Day',
+          approvedBy: 'Bob',
+        },
+        {
+          name: 'Bob',
+          type: 'Full Day',
+          approvedBy: 'Alice',
+        },
+      ],
     },
     {
-      avatar: { src: avatar2, status: 'danger' },
-      user: {
-        name: 'Avram Tarasios',
-        new: false,
-        registered: 'Jan 1, 2023',
-      },
-      country: { name: 'Brazil', flag: cifBr },
-      usage: {
-        value: 22,
-        period: 'Jun 11, 2023 - Jul 10, 2023',
-        color: 'info',
-      },
-      payment: { name: 'Visa', icon: cibCcVisa },
-      activity: '5 minutes ago',
+      department: 'User Experience',
+      leaveData: [
+        {
+          name: 'Bob Doe',
+          type: 'Half Day',
+          approvedBy: 'Jane Doe',
+        },
+        {
+          name: 'Bob Doe',
+          type: 'Full Day',
+          approvedBy: 'John Doe',
+        },
+        {
+          name: 'Alice',
+          type: 'Half Day',
+          approvedBy: 'Bob',
+        },
+        {
+          name: 'Bob',
+          type: 'Full Day',
+          approvedBy: 'Alice',
+        },
+      ],
     },
     {
-      avatar: { src: avatar3, status: 'warning' },
-      user: { name: 'Quintin Ed', new: true, registered: 'Jan 1, 2023' },
-      country: { name: 'India', flag: cifIn },
-      usage: {
-        value: 74,
-        period: 'Jun 11, 2023 - Jul 10, 2023',
-        color: 'warning',
-      },
-      payment: { name: 'Stripe', icon: cibCcStripe },
-      activity: '1 hour ago',
+      department: 'Accounting',
+      leaveData: [
+        {
+          name: 'Peter Doe',
+          type: 'Half Day',
+          approvedBy: 'Jane Doe',
+        },
+        {
+          name: 'Peter Doe',
+          type: 'Full Day',
+          approvedBy: 'John Doe',
+        },
+        {
+          name: 'Alice',
+          type: 'Half Day',
+          approvedBy: 'Bob',
+        },
+        {
+          name: 'Bob',
+          type: 'Full Day',
+          approvedBy: 'Alice',
+        },
+      ],
     },
     {
-      avatar: { src: avatar4, status: 'secondary' },
-      user: { name: 'Enéas Kwadwo', new: true, registered: 'Jan 1, 2023' },
-      country: { name: 'France', flag: cifFr },
-      usage: {
-        value: 98,
-        period: 'Jun 11, 2023 - Jul 10, 2023',
-        color: 'danger',
-      },
-      payment: { name: 'PayPal', icon: cibCcPaypal },
-      activity: 'Last month',
-    },
-    {
-      avatar: { src: avatar5, status: 'success' },
-      user: {
-        name: 'Agapetus Tadeáš',
-        new: true,
-        registered: 'Jan 1, 2023',
-      },
-      country: { name: 'Spain', flag: cifEs },
-      usage: {
-        value: 22,
-        period: 'Jun 11, 2023 - Jul 10, 2023',
-        color: 'primary',
-      },
-      payment: { name: 'Google Wallet', icon: cibCcApplePay },
-      activity: 'Last week',
-    },
-    {
-      avatar: { src: avatar6, status: 'danger' },
-      user: {
-        name: 'Friderik Dávid',
-        new: true,
-        registered: 'Jan 1, 2023',
-      },
-      country: { name: 'Poland', flag: cifPl },
-      usage: {
-        value: 43,
-        period: 'Jun 11, 2023 - Jul 10, 2023',
-        color: 'success',
-      },
-      payment: { name: 'Amex', icon: cibCcAmex },
-      activity: 'Last week',
+      department: 'IT',
+      leaveData: [
+        {
+          name: 'John Doe',
+          type: 'Half Day',
+          approvedBy: 'Jane Doe',
+        },
+        {
+          name: 'Jane Doe',
+          type: 'Full Day',
+          approvedBy: 'John Doe',
+        },
+        {
+          name: 'Alice',
+          type: 'Half Day',
+          approvedBy: 'Bob',
+        },
+        {
+          name: 'Bob',
+          type: 'Full Day',
+          approvedBy: 'Alice',
+        },
+      ],
     },
   ]
 
@@ -205,12 +206,11 @@ const CEODashboard = () => {
                 Leave History
               </h4>
             </CCol>
-            <CCol sm={7} className="d-none d-md-block">
-            </CCol>
+            <CCol sm={7} className="d-none d-md-block"></CCol>
           </CRow>
           <MainChart exampleData={leaveHistory} />
         </CCardBody>
-        <CCardFooter>
+        {/* <CCardFooter>
           <CRow
             xs={{ cols: 1, gutter: 4 }}
             sm={{ cols: 2 }}
@@ -233,15 +233,15 @@ const CEODashboard = () => {
               </CCol>
             ))}
           </CRow>
-        </CCardFooter>
+        </CCardFooter> */}
       </CCard>
       <CRow>
         <CCol xs>
           <CCard className="mb-4">
-            <CCardHeader>Traffic {' & '} Sales</CCardHeader>
+            <CCardHeader>Today Absentees</CCardHeader>
             <CCardBody>
               <CRow>
-                <CCol xs={12} md={6} xl={6}>
+                {/* <CCol xs={12} md={6} xl={6}>
                   <CRow>
                     <CCol xs={6}>
                       <div className="border-start border-start-4 border-start-info py-1 px-3">
@@ -270,8 +270,8 @@ const CEODashboard = () => {
                       </div>
                     </div>
                   ))}
-                </CCol>
-                <CCol xs={12} md={6} xl={6}>
+                </CCol> */}
+                {/* <CCol xs={12} md={6} xl={6}>
                   <CRow>
                     <CCol xs={6}>
                       <div className="border-start border-start-4 border-start-warning py-1 px-3 mb-3">
@@ -319,10 +319,25 @@ const CEODashboard = () => {
                       </div>
                     </div>
                   ))}
-                </CCol>
+                </CCol> */}
               </CRow>
 
               <br />
+              {tableExample.map((item, index) => (
+                <div className="form-check" key={index} style={{display: 'inline-block', marginRight: '1rem',marginBottom: '1rem'}}>
+                  <input
+                    className="form-check-input"
+                    type="radio"
+                    name="flexRadioDefault"
+                    id={`flexRadioDefault${index}`}
+                    onChange={() => setSelectedTab(index)} // Use onChange instead of onSelect
+                    checked={selectedTab === index} // Ensure the correct radio button is checked
+                  />
+                  <label className="form-check-label" htmlFor={`flexRadioDefault${index}`}>
+                    {item.department}
+                  </label>
+                </div>
+              ))}
 
               <CTable align="middle" className="mb-0 border" hover responsive>
                 <CTableHead className="text-nowrap">
@@ -330,49 +345,30 @@ const CEODashboard = () => {
                     <CTableHeaderCell className="bg-body-tertiary text-center">
                       <CIcon icon={cilPeople} />
                     </CTableHeaderCell>
-                    <CTableHeaderCell className="bg-body-tertiary">User</CTableHeaderCell>
+                    <CTableHeaderCell className="bg-body-tertiary">Name</CTableHeaderCell>
                     <CTableHeaderCell className="bg-body-tertiary text-center">
-                      Country
+                      Is Manager
                     </CTableHeaderCell>
-                    <CTableHeaderCell className="bg-body-tertiary">Usage</CTableHeaderCell>
+                    {/* <CTableHeaderCell className="bg-body-tertiary">Usage</CTableHeaderCell> */}
                     <CTableHeaderCell className="bg-body-tertiary text-center">
-                      Payment Method
+                      Type
                     </CTableHeaderCell>
-                    <CTableHeaderCell className="bg-body-tertiary">Activity</CTableHeaderCell>
+                    <CTableHeaderCell className="bg-body-tertiary">Approved By</CTableHeaderCell>
                   </CTableRow>
                 </CTableHead>
                 <CTableBody>
-                  {tableExample.map((item, index) => (
-                    <CTableRow v-for="item in tableItems" key={index}>
+                  {tableExample[selectedTab].leaveData.map((leave, idx) => (
+                    <CTableRow key={idx}>
                       <CTableDataCell className="text-center">
-                        <CAvatar size="md" src={item.avatar.src} status={item.avatar.status} />
+                        <CAvatar size="md" status="success" /> {/* Add avatar or placeholder */}
                       </CTableDataCell>
-                      <CTableDataCell>
-                        <div>{item.user.name}</div>
-                        <div className="small text-body-secondary text-nowrap">
-                          <span>{item.user.new ? 'New' : 'Recurring'}</span> | Registered:{' '}
-                          {item.user.registered}
-                        </div>
-                      </CTableDataCell>
+                      <CTableDataCell>{leave.name}</CTableDataCell>
                       <CTableDataCell className="text-center">
-                        <CIcon size="xl" icon={item.country.flag} title={item.country.name} />
+                        {leave.type.includes('Manager') ? 'Yes' : 'No'}{' '}
+                        {/* Example logic for "Is Manager" */}
                       </CTableDataCell>
-                      <CTableDataCell>
-                        <div className="d-flex justify-content-between text-nowrap">
-                          <div className="fw-semibold">{item.usage.value}%</div>
-                          <div className="ms-3">
-                            <small className="text-body-secondary">{item.usage.period}</small>
-                          </div>
-                        </div>
-                        <CProgress thin color={item.usage.color} value={item.usage.value} />
-                      </CTableDataCell>
-                      <CTableDataCell className="text-center">
-                        <CIcon size="xl" icon={item.payment.icon} />
-                      </CTableDataCell>
-                      <CTableDataCell>
-                        <div className="small text-body-secondary text-nowrap">Last login</div>
-                        <div className="fw-semibold text-nowrap">{item.activity}</div>
-                      </CTableDataCell>
+                      <CTableDataCell className="text-center">{leave.type}</CTableDataCell>
+                      <CTableDataCell>{leave.approvedBy}</CTableDataCell>
                     </CTableRow>
                   ))}
                 </CTableBody>

@@ -38,6 +38,7 @@ const AppHeader = () => {
   const headerRef = useRef()
   const { colorMode, setColorMode } = useColorModes('coreui-free-react-admin-template-theme')
   const [shake, setShake] = useState(false)
+  const [dashboardSelected, setDashboardSelected] = useState(true)
 
   //shake
   useEffect(() => {
@@ -97,6 +98,20 @@ const AppHeader = () => {
               </p>
             </CNavLink>
           </CNavItem>
+          {(role.designation === 'manager' || role.id === 2) && (
+            <div style={{ display: 'flex', flexDirection: 'row', borderRadius: '25px',border: '1px solid #ed4242', padding: '5px', margin: '1rem' }}>
+              <CNavItem>
+                <CNavLink to="/dashboard/manager" as={NavLink} onClick={() => setDashboardSelected(true)} style={{ color: dashboardSelected ? 'white' : 'white', backgroundColor: dashboardSelected ? '#ed4242' : null, borderRadius: '25px' }}>
+                  Manager
+                </CNavLink>
+              </CNavItem>
+              <CNavItem>
+                <CNavLink to="/dashboard/employee" as={NavLink} onClick={() => setDashboardSelected(false)} style={{ color: dashboardSelected ? 'white' : 'white', backgroundColor: dashboardSelected ? null : '#ed4242', borderRadius: '25px' }}>
+                  Personal
+                </CNavLink>
+              </CNavItem>
+            </div>
+          )}
         </CHeaderNav>
         <CHeaderNav className="ms-auto">
           <CNavItem>
@@ -124,11 +139,11 @@ const AppHeader = () => {
               </CBadge>
             </CNav>
           </CNavItem>
-          <CNavItem>
+          {/* <CNavItem>
             <CNavLink href="#">
               <CIcon icon={cilList} size="lg" />
             </CNavLink>
-          </CNavItem>
+          </CNavItem> */}
         </CHeaderNav>
         <CHeaderNav>
           <li className="nav-item py-1">
