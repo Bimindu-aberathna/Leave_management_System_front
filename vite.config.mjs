@@ -47,7 +47,7 @@ export default defineConfig(() => {
     },
     server: {
       port: 3000,
-      host : '172.16.26.217',
+      // host : '172.16.26.217',
       proxy: {
         // https://vitejs.dev/config/server-options.html
       },
